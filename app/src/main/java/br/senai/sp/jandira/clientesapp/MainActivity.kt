@@ -30,30 +30,6 @@ class MainActivity : ComponentActivity() {
             ClientesAppTheme {
 
                 listaCLienteSceen()
-
-//                val cliente = Cliente(
-//                    id = null,
-//                    nome = "Cadastro do João",
-//                    email = "email@email.com"
-//                )
-//
-//                val conexao = Conexao().getClienteService()
-//                LaunchedEffect(Dispatchers.IO) {
-//                    conexao.cadastrarCliente(cliente).await()
-//                }
-
-               //var requisicao = conexao.cadastrarCliente(cliente)
-
-//                requisicao.enqueue(object : Callback<Cliente>{
-//                    override fun onResponse(call: Call<Cliente>, response: Response<Cliente>) {
-//                        println("http code ${response.code()}")
-//                    }
-//
-//                    override fun onFailure(call: Call<Cliente>, t: Throwable) {
-//                        TODO("Not yet implemented")
-//                    }
-//
-//                })
             }
         }
     }

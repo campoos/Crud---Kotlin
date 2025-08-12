@@ -1,27 +1,26 @@
 package br.senai.sp.jandira.clientesapp.screens.cliente.componentes
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
 import br.senai.sp.jandira.clientesapp.ui.theme.ClientesAppTheme
 
 @Composable
-fun barraInferior(modifier: Modifier = Modifier) {
+fun barraInferior(controleNavegacao: NavHostController?) {
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.primaryContainer
     ) {
         NavigationBarItem(
-            onClick = {},
+            onClick = {controleNavegacao!!.navigate(route = "Conteudo")},
             selected = false,
             icon = {
                 Icon(
@@ -47,16 +46,16 @@ fun barraInferior(modifier: Modifier = Modifier) {
             }
         )
         NavigationBarItem(
-            onClick = {},
+            onClick = {controleNavegacao!!.navigate(route = "Cadastro")},
             selected = false,
             icon = {
                 Icon(
-                    imageVector = Icons.Default.Person,
-                    contentDescription = "MeuPerfil"
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Novo"
                 )
             },
             label = {
-                Text(text = "Meu perfil")
+                Text(text = "Novo Cliente")
             }
         )
     }
@@ -66,6 +65,6 @@ fun barraInferior(modifier: Modifier = Modifier) {
 @Preview
 private fun barraInferiorPreview(){
     ClientesAppTheme {
-        barraInferior()
+        barraInferior(null)
     }
 }
