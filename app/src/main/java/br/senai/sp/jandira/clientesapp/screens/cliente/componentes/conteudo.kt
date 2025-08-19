@@ -15,8 +15,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.senai.sp.jandira.clientesapp.model.Cliente
+import br.senai.sp.jandira.clientesapp.service.ClienteService
 import br.senai.sp.jandira.clientesapp.service.Conexao
 import br.senai.sp.jandira.clientesapp.ui.theme.ClientesAppTheme
 import kotlinx.coroutines.Dispatchers
@@ -64,36 +68,80 @@ fun conteudo(paddingValues: PaddingValues) {
                 text = "lista de clientes"
             )
         }
-        LazyColumn {
+        LazyColumn (
+            contentPadding = PaddingValues(bottom = 80.dp)
+        ){
             items(clientes){ cliente ->
-                Card (
-                    modifier = Modifier
-                        .padding(
-                            start = 8.dp,
-                            end = 8.dp,
-                            bottom = 8.dp
-                        )
-                        .fillMaxWidth()
-                        .height(80.dp)
-                ) {
-                    Row (
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .fillMaxSize(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ){
-                        Column {
-                            Text(text = cliente.nome)
-                            Text(text = cliente.email)
-                        }
-                        Icon(
-                            Icons.Default.Delete,
-                            contentDescription = "delete"
-                        )
-                    }
-                }
+                CardCliente(cliente, clienteApi)
             }
+        }
+    }
+}
+
+@Composable
+private fun CardCliente(
+    cliente: Cliente,
+    clienteApi: ClienteService
+) {
+    var mostrarConfirmacaoExclusao by remember {
+        mutableStateOf(false)
+    }
+    Card(
+        modifier = Modifier
+            .padding(
+                start = 8.dp,
+                end = 8.dp,
+                bottom = 8.dp
+            )
+            .fillMaxWidth()
+            .height(80.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxSize(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column {
+                Text(text = cliente.nome)
+                Text(text = cliente.email)
+            }
+            IconButton(
+                onClick = {
+                    mostrarConfirmacaoExclusao = true
+                }
+            ) {
+                Icon(
+                    Icons.Default.Delete,
+                    contentDescription = "delete"
+                )
+            }
+        }
+        if (mostrarConfirmacaoExclusao) {
+            AlertDialog(
+                onDismissRequest = {
+                    mostrarConfirmacaoExclusao = false
+                },
+                confirmButton = {
+                    controleNavegacao!!.navigate("home")
+                },
+                dismissButton = {
+                    mostrarConfirmacaoExclusao = false
+                },
+                title = {
+                    Text(text = "Exclusao de cliente")
+                },
+                text = {
+                    Text(text = "Confirma a exclusao do cliente abaixo?\n\n${cliente.nome}")
+                },
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = "Cuidado"
+                    )
+                }
+            )
         }
     }
 }
